@@ -1,8 +1,12 @@
-/* Welcome to Compass.
- * In this file you should write your main styles. (or centralize your imports)
- * Import this file using the following HTML or equivalent:
- * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
-
 @import "compass";
 @import "formula/config";
 @import "formula";
+
+@include font-face("SSSocial", font-files("ss-social-regular.woff", "ss-social-regular.ttf", "ss-social-regular.svg#SSSocialRegular"), "ss-social-regular.eot");
+@include font-face("SSSocial", font-files("ss-social-circle.woff", "ss-social-circle.ttf", "ss-social-circle.svg#SSSocialCircle"), "ss-social-circle.eot", 700);
+
+@import "ss-social.css";
+
+@include font-face("SSStandard", font-files("ss-standard.woff", "ss-standard.ttf", "ss-standard.svg#SSStandard"), "ss-standard.eot");
+
+@import "ss-standard.css";

@@ -1,13 +1,9 @@
 class Application < Sinatra::Base
   helpers do
-    def add_header_js(*javascripts)
-      @_head_javascript ||= []
-      @_head_javascript += javascripts
-    end
-    
+
     def add_js(*javascripts)
-      @_foot_javascript ||= []
-      @_foot_javascript += javascripts
+      @_scripts ||= []
+      @_scripts += javascripts
     end
 
     def add_css *stylesheets
@@ -15,13 +11,10 @@ class Application < Sinatra::Base
       @_css += stylesheets
     end
 
-    def extra_js position = :footer
-      @_foot_javascript ||= []
-      @_head_javascript ||= []
+    def include_js
       extra_javascript = ""
-      javascripts = (position == :head) ? @_head_javascript : @_foot_javascript
-      unless javascripts.to_a.empty?
-        javascripts.each do |script|
+      unless @_scripts.to_a.empty?
+        @_scripts.each do |script|
           if script.match(/^http(|s):\/\//)
             extra_javascript += "<script src='#{javascript}'></script>"
           elsif script.match(/<script/)
@@ -34,10 +27,9 @@ class Application < Sinatra::Base
       extra_javascript
     end
 
-    def extra_css
+    def include_css
       extra_stylesheets = ""
       unless @_css.to_a.empty?
-        
         @_css.each do |stylesheet|
           if stylesheet.match(/^http(|s):\/\//)
             extra_stylesheets += "<link rel='stylesheet' href='#{stylesheet}'>"

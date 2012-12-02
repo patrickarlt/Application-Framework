@@ -23,9 +23,8 @@ Dir.glob(%w{lib/** helpers models}.map! {|d| File.join d, '*.rb'}).each {|f| req
 class Application < Sinatra::Base
 
   # Load Configuration Variables  
-  @@config = Hashie::Mash.new YAML.load_file('./config/config.yaml')[ENV['RACK_ENV'].to_s]
   def self.Config
-    @@config
+    @@config ||= Hashie::Mash.new YAML.load_file('./config/config.yaml')[ENV['RACK_ENV'].to_s]
   end
 
   def self.production?
@@ -44,7 +43,7 @@ class Application < Sinatra::Base
   set :public_folder,   'public'
   set :erubis,          :escape_html => true
   set :sessions,        true
-  set :session_secret,  @@config.session_secret
+  set :session_secret,  self.Config.session_secret
 
   # Development Specific Configuration
   configure :development do
@@ -88,6 +87,7 @@ class Application < Sinatra::Base
     sprockets.append_path File.join(root, "assets", "css")
     sprockets.append_path File.join(root, "assets", "js")
     sprockets.append_path File.join(root, "assets", "img")
+    sprockets.append_path File.join(root, "assets", "fonts")
 
     # Configure Sprockets::Helpers (if necessary)
     Sprockets::Helpers.configure do |config|
